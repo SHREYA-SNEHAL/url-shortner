@@ -1,9 +1,14 @@
 const {Sequelize,DataTypes}=require('sequelize');
 
-const sequelize=new Sequelize('url','root','Shreya@19',{
-    host:'localhost',
-    dialect:'mysql',
-});
+const sequelize=new Sequelize(
+    process.env.DB_NAME || 'url',
+    process.env.DB_USER || 'root',
+    process.env.DB_PASS,               // <- pulled from environment
+    {
+        host: process.env.DB_HOST || 'localhost',
+        dialect: 'mysql',
+    }
+);
 
 //Define table
 

@@ -1,23 +1,31 @@
 const {sequelize,urls}=require('../db');
 const {nanoid}=require('nanoid');
 
+//check url is valid or not
+const isValidUrl=(url)=>{
+    try{
+        //built-in validation
+        // new URL(url);
+        // return true;
+        const parsed=new URL(url.trim());
+        return parsed.protocol === "http:" || parsed.protocol==="https";
+    }catch(_){
+        return false;
+    }
+};
 
 const createShortURL=async(req,res)=>{
     const{original_url}=req.body;
     
-    //check url is valid or not
-    const isValidUrl=(url)=>{
-        try{
-            //built-in validation
-            new URL(url);
-            return true;
-        }catch(_){
-            return false;
-        }
-    };
-
-    if(!original_url || !isValidUrl(original_url)){
+  
+    //Missing URL
+    if(!original_url){
         return res.status(400).json({error:'Original Url is required'});
+
+    }
+    //Invalid URL
+    if(!isValidUrl(original_url)){
+        return res.status(400).json({error:'Invalid url format'});
 
     }
     
